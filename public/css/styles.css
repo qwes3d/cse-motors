@@ -75,7 +75,7 @@ main section {
 }
 
 .hero h3 {
-  color: #16a085;
+  color: #022720;
 }
 
 .hero p {
@@ -85,8 +85,8 @@ main section {
 .hero button {
   display: inline-block;
   padding: 0.5rem 1rem;
-  background-color: #e67e22;
-  color: white;
+  background-color: #ee9c54;
+  color: rgb(12, 11, 11);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -113,7 +113,7 @@ main section {
 .upgrades a {
   display: block;
   text-decoration: none;
-  color: #2980b9;
+  color: #030507;
   margin-bottom: 1rem;
 }
 
@@ -124,7 +124,7 @@ main section {
 footer {
   text-align: center;
   font-size: 0.85rem;
-  color: #555;
+  color: #020000;
   margin-top: 1rem;
 }
 
