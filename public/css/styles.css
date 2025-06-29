@@ -1,0 +1,191 @@
+/* ========== Mobile First Styles (Default for Small Screens) ========== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+  padding: 1rem;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+header h1 {
+  color: #2c3e50;
+  font-size: 2rem;
+}
+
+.account-link {
+  display: block;
+  text-align: right;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  color: #555;
+}
+nav {
+  background-color: #34495e; /* Dark blue-gray background */
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row; /* Stack vertically on mobile */
+  gap: 0.5rem;
+}
+
+nav ul li a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  background-color: #2c3e50;
+}
+
+nav ul li a:hover,
+nav ul li a:focus {
+  background-color: #1abc9c; /* Hover effect color */
+}
+
+
+main section {
+  background-color: white;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.hero h2 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.hero h3 {
+  color: #16a085;
+}
+
+.hero p {
+  margin: 0.5rem 0;
+}
+
+.hero button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.hero button:hover,
+.hero button:focus {
+  background-color: #d35400;
+}
+
+.hero img {
+  max-width: 100%;
+  height: auto;
+}
+
+.upgrades img {
+  width: 100%;
+  height: auto;
+  max-width: 150px;
+  margin-bottom: 0.5rem;
+}
+
+.upgrades a {
+  display: block;
+  text-decoration: none;
+  color: #2980b9;
+  margin-bottom: 1rem;
+}
+
+.reviews ul {
+  list-style: disc inside;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 1rem;
+}
+
+a:focus {
+  outline: 2px dashed #2980b9;
+  outline-offset: 2px;
+}
+
+/* Prevent horizontal scroll on mobile */
+body {
+  overflow-x: hidden;
+}
+
+/* ========== Large Screen Styles (Desktop / Tablet) ========== */
+@media screen and (min-width: 768px) {
+  body {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: white;
+    border: 8px solid #00c8ff; /* You can adjust this border color */
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  nav ul {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  nav ul li a {
+    padding: 0.5rem 1rem;
+  }
+
+  main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .hero {
+    grid-column: span 2;
+    text-align: center;
+  }
+
+  .upgrades img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+
+  .upgrades a {
+    text-align: center;
+  }
+
+  footer {
+    grid-column: span 2;
+  }
+}
