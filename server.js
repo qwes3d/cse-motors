@@ -2,6 +2,8 @@
 const express = require('express');
 const path = require('path');
 
+const baseController = require("./controllers/baseController")
+
 // Initialize the Express app
 const app = express();
 
@@ -15,9 +17,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Home Route - render index.ejs
-app.get('/', (req, res) => {
-  res.render('index');
-});
+app.get('/', baseController.buildHome);
 
 // Optional: Additional routes (you can create these pages later)
 app.get('/inventory', (req, res) => {
