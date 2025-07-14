@@ -9,4 +9,10 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 // Route for detail view
 router.get("/detail/:invId", utilities.handleErrors(invController.buildVehicleDetail))
 
+router.get("/cause-error", (req, res) => {
+  throw new Error("Intentional server error for testing.")
+})
+
+
+
 module.exports = router
