@@ -6,6 +6,8 @@ const baseController = require("./controllers/baseController");
 
 const inventoryRoute = require('./routes/inventoryRoute');
 
+const utilities = require("../utilities")
+
 // Initialize the Express app
 const app = express();
 
@@ -36,6 +38,23 @@ app.get('/services', (req, res) => {
 app.get('/contact', (req, res) => {
   res.send('Contact Page (Coming Soon)');
 });
+
+
+/* ***********************
+* Express Error Handler
+* Place after all other middleware
+*************************/
+app.use(async (err, req, res, next) => {
+  let nav = await utilities.getNav()
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
+  res.render("errors/error", {
+    title: err.status || 'Server Error',
+    message: err.message,
+    nav
+  })
+})
+
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;
