@@ -6,7 +6,7 @@ const baseController = require("./controllers/baseController");
 
 const inventoryRoute = require('./routes/inventoryRoute');
 
-const utilities = require("../utilities")
+const utilities = require("./utilities")
 
 // Initialize the Express app
 const app = express();
@@ -21,7 +21,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Home Route - render index.ejs
-app.get('/', baseController.buildHome);
+// Index route
+app.get("/", utilities.handleErrors(baseController.buildHome))
+
 // Inventory routes
 app.use("/inv", inventoryRoute)
 // About Route - render about.ejs
