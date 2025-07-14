@@ -1,4 +1,6 @@
 // Load required modules
+require('dotenv').config();
+
 const express = require('express');
 
 const path = require('path');
