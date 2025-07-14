@@ -1,0 +1,94 @@
+/* Base layout */
+.vehicle-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.vehicle-detail h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Responsive side-by-side layout */
+.vehicle-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.vehicle-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Right side info */
+.vehicle-info {
+  flex: 1;
+}
+
+.vehicle-info h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.vehicle-info .price {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #1a7f37;
+  margin-bottom: 1rem;
+}
+
+.vehicle-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.vehicle-info li {
+  margin: 0.4rem 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Buttons */
+.vehicle-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.vehicle-buttons a {
+  text-align: center;
+  padding: 0.75rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  color: white;
+  background-color: #007bff;
+  transition: background 0.3s ease;
+}
+
+.vehicle-buttons a:hover {
+  background-color: #0056b3;
+}
+
+/* Larger screens */
+@media screen and (min-width: 768px) {
+  .vehicle-content {
+    flex-direction: row;
+  }
+
+  .vehicle-image {
+    flex: 1;
+  }
+
+  .vehicle-info {
+    flex: 1.5;
+  }
+}

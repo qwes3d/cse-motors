@@ -25,6 +25,9 @@ Util.getNav = async function (req, res, next) {
 }
 
 
+
+
+
 /* **************************************
 * Build the classification view HTML
 * ************************************ */
@@ -58,11 +61,28 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
-/* ****************************************
- * Middleware For Handling Errors
- * Wrap other function in this for 
- * General Error Handling
- **************************************** */
-Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+
+Util.buildVehicleDetail = function (vehicle) {
+  return `
+    <div class="vehicle-detail">
+      <img src="${vehicle.inv_image}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}" />
+      <div class="vehicle-info">
+        <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
+        <p><strong>Price:</strong> $${vehicle.inv_price.toLocaleString()}</p>
+        <p><strong>Mileage:</strong> ${vehicle.inv_miles.toLocaleString()} miles</p>
+        <p><strong>Color:</strong> ${vehicle.inv_color}</p>
+        <p><strong>Description:</strong> ${vehicle.inv_description}</p>
+      </div>
+    </div>
+  `
+}
+
+
+Util.handleErrors = function (fn) {
+  return function (req, res, next) {
+    return Promise.resolve(fn(req, res, next)).catch(next)
+  }
+}
 
 module.exports = Util
