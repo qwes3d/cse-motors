@@ -1,6 +1,9 @@
 // Load required modules
 const express = require('express');
+app.use(express.static("public"))
+
 const path = require('path');
+
 
 const baseController = require("./controllers/baseController");
 
