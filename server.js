@@ -1,6 +1,5 @@
 // Load required modules
 const express = require('express');
-app.use(express.static("public"))
 
 const path = require('path');
 
@@ -13,6 +12,8 @@ const utilities = require("./utilities")
 
 // Initialize the Express app
 const app = express();
+
+app.use(express.static("public"))
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
