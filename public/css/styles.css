@@ -1,5 +1,50 @@
 /* ========== Mobile First Styles (Default for Small Screens) ========== */
 /* ========== Mobile First Styles (Default for Small Screens) ========== */
+
+.login-form {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #f9f9f9;
+}
+
+.login-form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.login-form button {
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  width: 100%;
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.flash-message {
+  background: #ffe0e0;
+  color: #b00020;
+  padding: 1rem;
+  margin: 1rem auto;
+  max-width: 400px;
+  border-radius: 4px;
+  text-align: center;
+}
+/* General styles */
+
+
 * {
   margin: 0;
   padding: 0;

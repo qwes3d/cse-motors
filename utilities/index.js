@@ -85,4 +85,18 @@ Util.handleErrors = function (fn) {
   }
 }
 
+
+function getNav() {
+  let nav = `
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/inventory">Inventory</a></li>
+      <li><a href="/account/login">My Account</a></li>
+    </ul>
+  `;
+  return nav;
+}
+Util.getNav = getNav;
+
+
 module.exports = Util

@@ -9,6 +9,12 @@ router.get("/type/:classificationId", utilities.handleErrors(invController.build
 // Route for detail view
 router.get("/detail/:invId", utilities.handleErrors(invController.buildVehicleDetail))
 
+// Your routes here
+router.get("/", (req, res) => {
+  res.send("Inventory home page");
+});
+
+
 router.get("/cause-error", (req, res) => {
   throw new Error("Intentional server error for testing.")
 })

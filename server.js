@@ -2,6 +2,8 @@
 require('dotenv').config();
 
 // Required modules
+const session = require("express-session")
+const pool = require('./database/')
 const express = require('express');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
@@ -9,6 +11,8 @@ const expressLayouts = require('express-ejs-layouts');
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require('./routes/inventoryRoute');
 const utilities = require("./utilities");
+const accountRoute = require("./routes/accountRoute");
+
 
 // Initialize Express app
 const app = express();
@@ -16,6 +20,28 @@ const app = express();
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressLayouts); // Enable express-ejs-layouts
+ app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  name: 'sessionId',
+  
+}))
+
+
+// Express Messages Middleware
+app.use(require('connect-flash')())
+app.use(function(req, res, next){
+  res.locals.messages = require('express-messages')(req, res)
+  next()
+})
+app.use("/account", accountRoute);
+
+
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
