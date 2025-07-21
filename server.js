@@ -67,10 +67,9 @@ app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
 
-// Temporary placeholder pages
-app.get('/inventory', (req, res) => {
-  res.send('Inventory Page (Coming Soon)');
-});
+// 
+app.use("/inventory", inventoryRoute);
+
 app.get('/services', (req, res) => {
   res.send('Services Page (Coming Soon)');
 });

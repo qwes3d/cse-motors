@@ -1,7 +1,26 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities")
 
+const invController = {};
+
+
 const invCont = {}
+
+
+
+invCont.buildManagementView = async function (req, res) {
+  try {
+    res.render("inventory/management", {
+      title: "Inventory Management",
+      message: req.flash("message"),
+    });
+  } catch (error) {
+    console.error("Error rendering management view:", error);
+    res.status(500).render("error", { error });
+  }
+};
+
+
 
 /* ***************************
  *  Build inventory by classification view
@@ -39,4 +58,5 @@ invCont.buildVehicleDetail = async function (req, res, next) {
   }
 }
 
-module.exports = invCont
+module.exports = invCont;
+
