@@ -1,0 +1,41 @@
+
+<main>
+  <h1><%= title %></h1>
+
+  <% if (message) { %>
+    <div class="flash-message">
+      <p><%= message %></p>
+    </div>
+  <% } %>
+  <form action="/account/register" method="post" class="register-form">
+    <label for="fname">First Name</label>
+    <input type="text" id="fname" name="fname" required value="<%= typeof fname != 'undefined' ? fname : '' %>">
+
+    <label for="lname">Last Name</label>
+    <input type="text" id="lname" name="lname" required value="<%= typeof lname != 'undefined' ? lname : '' %>">
+
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" required value="<%= typeof email != 'undefined' ? email : '' %>">
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required pattern="(?=.*\d)(?=.*[A-Z])(?=.*\W).{12,}">
+    <button type="button" onclick="togglePassword()">Show Password</button>
+
+    <p class="note">Password must be at least 12 characters long, include 1 uppercase letter, 1 number, and 1 special character.</p>
+
+    <button type="submit">Register</button>
+  </form>
+</main>
+<% if (success_msg) { %>
+  <div class="alert alert-success"><%= success_msg %></div>
+<% } %>
+<% if (error_msg) { %>
+  <div class="alert alert-danger"><%= error_msg %></div>
+<% } %>
+
+<script>
+  function togglePassword() {
+    const pw = document.getElementById("password");
+    pw.type = pw.type === "password" ? "text" : "password";
+  }
+</script>

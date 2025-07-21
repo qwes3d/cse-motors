@@ -2,69 +2,83 @@
 require('dotenv').config();
 
 // Required modules
-const session = require("express-session")
-const pool = require('./database/')
 const express = require('express');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
-
+const session = require("express-session");
+const flash = require("connect-flash");
+const pgSession = require("connect-pg-simple")(session);
+const pool = require('./database/');
 const baseController = require("./controllers/baseController");
 const inventoryRoute = require('./routes/inventoryRoute');
+const accountRoute = require('./routes/accountRoute');
 const utilities = require("./utilities");
-const accountRoute = require("./routes/accountRoute");
+const bodyParser = require("body-parser");
 
 
 // Initialize Express app
 const app = express();
 
-// Middleware
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(expressLayouts); // Enable express-ejs-layouts
- app.use(session({
-  store: new (require('connect-pg-simple')(session))({
-    createTableIfMissing: true,
-    pool,
-  }),
-  secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  name: 'sessionId',
-  
-}))
-
-
-// Express Messages Middleware
-app.use(require('connect-flash')())
-app.use(function(req, res, next){
-  res.locals.messages = require('express-messages')(req, res)
-  next()
-})
-app.use("/account", accountRoute);
-
-
-
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-app.set('layout', './layouts/layout'); // Use views/layouts/layout.ejs as the layout
+app.set('layout', './layouts/layout'); // Layout path
+
+// Middleware
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressLayouts);
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true })); // To handle form data
+
+// Session middleware (must come before flash)
+app.use(session({
+  store: new pgSession({
+    pool,
+    tableName: 'session',
+    createTableIfMissing: true,
+  }),
+  secret: process.env.SESSION_SECRET || 'secret-key',
+  resave: false,
+  saveUninitialized: false,
+  name: 'sessionId',
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+  },
+}));
+
+// Flash middleware
+app.use(flash());
+
+// Custom middleware to pass flash messages to views
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash("success");
+  res.locals.error_msg = req.flash("error");
+  next();
+});
+
+// Optional: Use express-messages if you're using its helpers in EJS
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
 
 // Routes
 app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use("/inv", inventoryRoute);
+app.use("/account", accountRoute);
 
+// Temporary placeholder pages
 app.get('/inventory', (req, res) => {
   res.send('Inventory Page (Coming Soon)');
 });
-
 app.get('/services', (req, res) => {
   res.send('Services Page (Coming Soon)');
 });
-
 app.get('/contact', (req, res) => {
   res.send('Contact Page (Coming Soon)');
 });
 
-// 404 Not Found handler
+// 404 handler
 app.use(async (req, res, next) => {
   next({ status: 404, message: 'Sorry, we appear to have lost that page.' });
 });
@@ -83,5 +97,5 @@ app.use(async (err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`CSE Motors server running at http://localhost:${PORT}`);
+  console.log(`✅ CSE Motors server running at http://localhost:${PORT}`);
 });
