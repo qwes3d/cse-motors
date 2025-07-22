@@ -93,12 +93,24 @@ invCont.addClassification = async function (req, res) {
 
 invCont.buildAddInventory = async function (req, res, next) {
   try {
-    let classificationList = await utilities.buildClassificationList();
+     const classificationList = await utilities.buildClassificationList();
+    const nav = await utilities.getNav(); // ✅ Make sure this is defined
+
     res.render("inventory/add-inventory", {
       title: "Add New Inventory",
       classificationList,
-      nav: await utilities.getNav(),
-      errors: null
+       nav,
+      errors: null,
+      inv_make: "",
+      inv_model: "",
+      inv_year: "",
+      inv_description: "",
+      inv_image: "",
+      inv_thumbnail: "",
+      inv_price: "",
+      inv_miles: "",
+      inv_color: "",
+      classification_id: ""
     });
   } catch (error) {
     next(error);
