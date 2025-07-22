@@ -1,13 +1,9 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities")
 
-const invController = {};
-
-
 const invCont = {}
 
-
-
+// Management view
 invCont.buildManagementView = async function (req, res) {
   try {
     res.render("inventory/management", {
@@ -20,11 +16,7 @@ invCont.buildManagementView = async function (req, res) {
   }
 };
 
-
-
-/* ***************************
- *  Build inventory by classification view
- **************************** */
+// Classification view
 invCont.buildByClassificationId = async function (req, res, next) {
   const classification_id = req.params.classificationId
   const data = await invModel.getInventoryByClassificationId(classification_id)
@@ -36,11 +28,9 @@ invCont.buildByClassificationId = async function (req, res, next) {
     nav,
     grid,
   })
-}
+};
 
-/* ***************************
- *  Build vehicle detail view
- **************************** */
+// Detail view
 invCont.buildVehicleDetail = async function (req, res, next) {
   const inv_id = parseInt(req.params.invId)
   try {
@@ -50,13 +40,110 @@ invCont.buildVehicleDetail = async function (req, res, next) {
     res.render("inventory/detail", {
       title: `${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}`,
       nav,
-      vehicle // Pass the vehicle object to the view
-    
+      vehicle
     })
   } catch (error) {
     next(error)
   }
+};
+
+// Add classification form
+invCont.buildAddClassification = async function (req, res) {
+  const nav = await utilities.getNav();
+  res.render("inventory/add-classification", {
+    title: "Add Classification",
+    nav,
+    errors: null,
+  });
+};
+
+// Add classification handler
+invCont.addClassification = async function (req, res) {
+  const { classification_name } = req.body;
+  const nav = await utilities.getNav();
+
+  try {
+    const result = await invModel.addClassification(classification_name);
+    if (result) {
+      req.flash("success", "New classification added successfully!");
+      const updatedNav = await utilities.getNav(); 
+      return res.render("inventory/management", {
+        title: "Inventory Management",
+        nav: updatedNav,
+      });
+    } else {
+      req.flash("error", "Failed to add classification. Try again.");
+      res.status(500).render("inventory/add-classification", {
+        title: "Add Classification",
+        nav,
+        errors: null,
+      });
+    }
+  } catch (error) {
+    console.error("Error adding classification:", error.message);
+    req.flash("error", "Server error. Please try again.");
+    res.status(500).render("inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      errors: null,
+    });
+  }
+};
+
+
+invCont.buildAddInventory = async function (req, res, next) {
+  try {
+    let classificationList = await utilities.buildClassificationList();
+    res.render("inventory/add-inventory", {
+      title: "Add New Inventory",
+      classificationList,
+      nav: await utilities.getNav(),
+      errors: null
+    });
+  } catch (error) {
+    next(error);
+  }
 }
 
-module.exports = invCont;
 
+invCont.addInventory = async function (req, res, next) {
+  try {
+    const {
+      classification_id, inv_make, inv_model, inv_year, inv_description,
+      inv_image, inv_thumbnail, inv_price, inv_miles, inv_color
+    } = req.body;
+
+    const result = await invModel.addInventory({
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color
+    });
+
+    if (result) {
+      req.flash("notice", "Vehicle successfully added.");
+      res.redirect("/inv/management");
+    } else {
+      let classificationList = await utilities.buildClassificationList(classification_id);
+      req.flash("error", "Failed to add vehicle.");
+      res.render("inventory/add-inventory", {
+        title: "Add New Inventory",
+        classificationList,
+        nav: await utilities.getNav(),
+        ...req.body,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
+
+
+module.exports = invCont;

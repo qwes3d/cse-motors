@@ -1,3 +1,6 @@
+const pool = require("../database") // or correct relative path to your db setup
+
+
 const invModel = require("../models/inventory-model")
 
 const Util = {}
@@ -63,6 +66,25 @@ Util.buildClassificationGrid = async function(data){
 }
 
 
+Util.buildClassificationList = async function (classification_id = null) {
+    let data = await invModel.getClassifications()
+    let classificationList =
+      '<select name="classification_id" id="classificationList" required>'
+    classificationList += "<option value=''>Choose a Classification</option>"
+    data.rows.forEach((row) => {
+      classificationList += '<option value="' + row.classification_id + '"'
+      if (
+        classification_id != null &&
+        row.classification_id == classification_id
+      ) {
+        classificationList += " selected "
+      }
+      classificationList += ">" + row.classification_name + "</option>"
+    })
+    classificationList += "</select>"
+    return classificationList
+  }
+
 
 Util.buildVehicleDetail = function (vehicle) {
   return `
@@ -97,7 +119,19 @@ function getNav() {
   `;
   return nav;
 }
+
 Util.getNav = getNav;
+
+async function getNav() {
+  const data = await pool.query("SELECT * FROM classification ORDER BY classification_name");
+  let nav = '<ul>';
+  nav += `<li><a href="/" title="Home page">Home</a></li>`;
+  data.rows.forEach((row) => {
+    nav += `<li><a href="/inv/type/${row.classification_id}" title="See our ${row.classification_name} line">${row.classification_name}</a></li>`;
+  });
+  nav += "</ul>";
+  return nav;
+}
 
 
 module.exports = Util
