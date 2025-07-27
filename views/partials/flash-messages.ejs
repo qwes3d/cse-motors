@@ -1,6 +1,5 @@
-<% if (success_msg) { %>
-  <div class="alert success"><%= success_msg %></div>
+<% if (message && message.length > 0) { %>
+  <div class="notice"><%= message[0] %></div>
 <% } %>
-<% if (error_msg) { %>
-  <div class="alert error"><%= error_msg %></div>
-<% } %>
+
+

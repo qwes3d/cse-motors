@@ -1,13 +1,16 @@
+
 <%- include('../partials/header', { title: title, nav: nav }) %>
 
 <main>
-  <h1><%= title %></h1>
-  <section class="error-message">
-    <p><%- message %></p>
+  <% if (message && message.length > 0) { %>
+  <p><%- message[0] %></p>
+<% } else { %>
+  <p>Something went wrong. Try again later.</p>
+<% } %>
+
 
     <p>But hey... at least the car didn't crash, just the website! 😅</p>
     <a href="/" class="button">Back to safety</a>
   </section>
 </main>
 
-<%- include('../partials/footer') %>

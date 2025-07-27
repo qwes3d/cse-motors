@@ -10,12 +10,14 @@ const invCont = {}
 // Management view
 invCont.buildManagementView = async function (req, res) {
   try {
+    const classificationList = await utilities.getNav();
     res.render("inventory/management", {
       title: "Inventory Management",
-      message: req.flash("message"),
+      nav: classificationList,
+      message: req.flash("message") || "", // ✅ Ensure message is passed
     });
   } catch (error) {
-    console.error("Error rendering management view:", error);
+    console.error("Error building management view:", error);
     res.status(500).render("error", { error });
   }
 };
@@ -53,13 +55,18 @@ invCont.buildVehicleDetail = async function (req, res, next) {
 
 // Add classification form
 invCont.buildAddClassification = async function (req, res) {
-  const nav = await utilities.getNav();
-  res.render("inventory/add-classification", {
-    title: "Add Classification",
-    nav,
-    errors: null,
-  });
+  try {
+    res.render("inventory/add-classification", {
+      title: "Add Classification",
+      message: req.flash("message") || "", // ✅ Safe default
+      errors: null
+    });
+  } catch (error) {
+    console.error("Error rendering add classification:", error);
+    res.status(500).render("error", { error });
+  }
 };
+
 
 // Add classification handler
 invCont.addClassification = async function (req, res) {
