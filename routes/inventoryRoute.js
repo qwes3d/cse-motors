@@ -1,35 +1,43 @@
+// inventoryRoute.js
+
 const express = require("express")
 const router = express.Router()
 const invController = require("../controllers/invController")
 const utilities = require("../utilities")
-const validate = require("../utilities/inventory-validation") // ✅ Add correct path to your validation logic
+const validate = require("../utilities/inventory-validation")
 
 // Management view route
 router.get("/", utilities.handleErrors(invController.buildManagementView))
 
-// Route for classification view
+// Classification view
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId))
 
-// Route for detail view
+// Vehicle detail view
 router.get("/detail/:invId", utilities.handleErrors(invController.buildVehicleDetail))
 
-router.get("/add-inventory", invController.buildAddInventory);
+// Add inventory form
+router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory))
 
+// Handle inventory submission
+router.post(
+  "/add-inventory",
+  validate.inventoryRules(),
+  validate.checkInventoryData,
+  utilities.handleErrors(invController.addInventory)
+)
 
-router.post("/add-inventory", invController.addInventory);
+// Render add classification form
+router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification))
 
-// Render the add classification form
-router.get("/add-classification", invController.buildAddClassification)
-
-// Handle form submission
+// Handle classification submission
 router.post(
   "/add-classification",
   validate.classificationRules(),
   validate.checkClassificationData,
-  invController.addClassification
+  utilities.handleErrors(invController.addClassification)
 )
 
-// Route to simulate an error (for testing error handlers)
+// Route to simulate error
 router.get("/cause-error", (req, res) => {
   throw new Error("Intentional server error for testing.")
 })

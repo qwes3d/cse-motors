@@ -1,5 +1,9 @@
+//invcontroller.js
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities")
+
+const { validationResult } = require("express-validator");
+
 
 const invCont = {}
 
@@ -65,14 +69,14 @@ invCont.addClassification = async function (req, res) {
   try {
     const result = await invModel.addClassification(classification_name);
     if (result) {
-      req.flash("success", "New classification added successfully!");
+      req.flash("message", "New classification added successfully!");
       const updatedNav = await utilities.getNav(); 
       return res.render("inventory/management", {
         title: "Inventory Management",
         nav: updatedNav,
       });
     } else {
-      req.flash("error", "Failed to add classification. Try again.");
+      req.flash("message", "Failed to add classification. Try again.");
       res.status(500).render("inventory/add-classification", {
         title: "Add Classification",
         nav,
@@ -81,7 +85,7 @@ invCont.addClassification = async function (req, res) {
     }
   } catch (error) {
     console.error("Error adding classification:", error.message);
-    req.flash("error", "Server error. Please try again.");
+    req.flash("message", "Server error. Please try again.");
     res.status(500).render("inventory/add-classification", {
       title: "Add Classification",
       nav,
@@ -91,7 +95,7 @@ invCont.addClassification = async function (req, res) {
 };
 
 
-invCont.buildAddInventory = async function (req, res, next) {
+invCont.buildAddInventory = async function (res, res) {
   try {
      const classificationList = await utilities.buildClassificationList();
     const nav = await utilities.getNav(); // ✅ Make sure this is defined
@@ -125,6 +129,8 @@ invCont.addInventory = async function (req, res, next) {
       inv_image, inv_thumbnail, inv_price, inv_miles, inv_color
     } = req.body;
 
+    const errors = validationResult(req);
+
     const result = await invModel.addInventory({
       classification_id,
       inv_make,
@@ -139,11 +145,11 @@ invCont.addInventory = async function (req, res, next) {
     });
 
     if (result) {
-      req.flash("notice", "Vehicle successfully added.");
+      req.flash("message", "Vehicle successfully added.");
       res.redirect("/inv/management");
     } else {
       let classificationList = await utilities.buildClassificationList(classification_id);
-      req.flash("error", "Failed to add vehicle.");
+      req.flash("message", "Failed to add vehicle.");
       res.render("inventory/add-inventory", {
         title: "Add New Inventory",
         classificationList,
