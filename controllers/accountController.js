@@ -34,14 +34,14 @@ async function accountLogin(req, res, next) {
     // Check if account exists
     const account = await accountModel.getAccountByEmail(account_email);
     if (!account) {
-      req.flash('error', 'Invalid email or password');
+      req.flash('error', 'Invalid email');
       return res.redirect('/account/login');
     }
 
     // Verify password
     const isMatch = await bcrypt.compare(account_password, account.account_password);
     if (!isMatch) {
-      req.flash('error', 'Invalid email or password');
+      req.flash('error', 'Invalid password');
       return res.redirect('/account/login');
     }
 
