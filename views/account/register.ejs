@@ -1,13 +1,21 @@
 
+<%- include('../partials/header', { title: 'Register' }) %>
 
 <main>
   <h1><%= title %></h1>
 
-  <% if (message) { %>
-    <div class="flash-message">
-      <p><%= message %></p>
+  <% if (messages.error) { %>
+    <div class="flash-message error">
+      <p><%= messages.error %></p>
     </div>
   <% } %>
+
+  <% if (messages.success) { %>
+    <div class="flash-message success">
+      <p><%= messages.success %></p>
+    </div>
+  <% } %>
+
   <form action="/account/register" method="post" class="register-form">
     <label for="fname">First Name</label>
    <input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>">

@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
+
 const pool = require("../database") // or correct relative path to your db setup
 
 
@@ -132,6 +135,47 @@ async function getNav() {
   nav += "</ul>";
   return nav;
 }
+
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  const token = req.cookies.jwt;
+  
+  if (!token) {
+    req.flash("notice", "Please log in to access this page");
+    return res.redirect("/account/login");
+  }
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) {
+      res.clearCookie("jwt");
+      req.flash("notice", "Session expired - please log in again");
+      return res.redirect("/account/login");
+    }
+    
+    res.locals.accountData = decoded;
+    res.locals.loggedin = true;
+    next();
+  });
+};
+
+
+
+/* ****************************************
+ *  Check Login
+ * ************************************ */
+Util.checkLogin = (req, res, next) => {
+  if (res.locals.loggedin) {
+    next() // User is logged in, continue to the requested route
+  } else {
+    req.flash("notice", "Please log in.")
+    return res.redirect("/account/login") // Redirect to login page
+  }
+}
+
+
+
 
 
 module.exports = Util

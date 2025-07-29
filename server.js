@@ -2,6 +2,7 @@
 require('dotenv').config();
 
 // Required modules
+const cookieParser = require("cookie-parser")
 const express = require('express');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
@@ -29,6 +30,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressLayouts);
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true })); // To handle form data
+app.use(cookieParser())
+// 
+app.use(express.static('public'))
+
 
 // Session middleware (must come before flash)
 app.use(session({

@@ -7,16 +7,17 @@ const accountModel = require("../models/account-model");
  * *************************** */
 async function registerAccount(account_firstname, account_lastname, account_email, account_password) {
   try {
-    const sql = `
-      INSERT INTO account 
-        (account_firstname, account_lastname, account_email, account_password, account_type)
-      VALUES 
-        ($1, $2, $3, $4, 'Client')
-      RETURNING *;
-    `;
-    return await pool.query(sql, [account_firstname, account_lastname, account_email, account_password]);
+    const sql = "INSERT INTO account (account_firstname, account_lastname, account_email, account_password, account_type) VALUES ($1, $2, $3, $4, 'Client') RETURNING account_id, account_firstname, account_email";
+    const result = await pool.query(sql, [
+      account_firstname,
+      account_lastname,
+      account_email,
+      account_password
+    ]);
+    return result.rows[0];
   } catch (error) {
-    return error.message;
+    console.error("Registration error:", error);
+    return null;
   }
 }
 /* ****************************************
@@ -69,9 +70,28 @@ async function checkExistingEmail(account_email) {
 }
 
 
+
+
+/* *****************************
+* Return account data using email address
+* ***************************** */
+async function getAccountByEmail (account_email) {
+  try {
+    const result = await pool.query(
+      'SELECT account_id, account_firstname, account_lastname, account_email, account_type, account_password FROM account WHERE account_email = $1',
+      [account_email])
+    return result.rows[0]
+  } catch (error) {
+    return new Error("No matching email found")
+  }
+}
+
+
+
 module.exports = {
   registerAccount,
   checkExistingEmail,
-  processRegistration
+  processRegistration,
+  getAccountByEmail
 };
 

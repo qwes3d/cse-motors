@@ -3,13 +3,32 @@
   <h1>Inventory Management</h1>
 
   <!-- Flash message display -->
-  <% if (message.length > 0) { %>
-    <div class="notice"><%= message %></div>
-  <% } %>
+<% if (typeof message !== 'undefined' && message.length > 0) { %>
+  <div class="notice"><%= message[0] %></div>
+<% } %>
 
-  <ul>
-    <li><a href="/inv/add-classification">Add New Classification</a></li>
-    <li><a href="/inv/add-inventory">Add New Inventory</a></li>
-  </ul>
-</main>
+  <p>Welcome to the inventory management page. Here you can manage vehicle classifications and view vehicles.</p>
 
+<!-- Existing links to add new classification/vehicle -->
+<div class="add-links">
+  <a href="/inv/add-classification">Add New Classification</a>
+  <a href="/inv/add-inventory">Add New Vehicle</a>
+</div>
+
+<!-- New inventory management section -->
+<h2>Manage Inventory</h2>
+<p>Select a classification from the list to see the items belonging to the classification.</p>
+
+<!-- Classification select list -->
+<%- classificationSelect %>
+
+<!-- Empty table for inventory display -->
+<table id="inventoryDisplay"></table>
+
+<!-- Noscript warning -->
+<noscript>
+  <p class="notice">JavaScript must be enabled to use this page.</p>
+</noscript>
+
+<!-- Link to your JavaScript file -->
+<script src="/js/inventory.js"></script>

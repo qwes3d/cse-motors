@@ -83,11 +83,77 @@ invModel.addInventory = async function (vehicle) {
   }
 }
 
+/* ***************************
+ * Update Inventory in Database
+ * ************************** */
+async function updateInventory(inventoryData) {
+  try {
+    const sql = `UPDATE inventory SET
+      inv_make = $1,
+      inv_model = $2,
+      inv_year = $3,
+      inv_description = $4,
+      inv_image = $5,
+      inv_thumbnail = $6,
+      inv_price = $7,
+      inv_miles = $8,
+      inv_color = $9,
+      classification_id = $10
+      WHERE inv_id = $11
+      RETURNING *`;
+    
+    const result = await pool.query(sql, [
+      inventoryData.inv_make,
+      inventoryData.inv_model,
+      inventoryData.inv_year,
+      inventoryData.inv_description,
+      inventoryData.inv_image,
+      inventoryData.inv_thumbnail,
+      inventoryData.inv_price,
+      inventoryData.inv_miles,
+      inventoryData.inv_color,
+      inventoryData.classification_id,
+      inventoryData.inv_id
+    ]);
+    
+    return result.rows[0];
+  } catch (error) {
+    console.error("Model update error:", error);
+    throw error;
+  }
+}
+
+
+// In your model
+async function hasChanges(inv_id, newData) {
+  const current = await getInventoryById(inv_id);
+  return Object.keys(newData).some(key => current[key] != newData[key]);
+}
+
+/* ***************************
+ * Delete Inventory Item
+ * ************************** */
+async function deleteInventory(inv_id) {
+  try {
+    const sql = 'DELETE FROM inventory WHERE inv_id = $1 RETURNING *';
+    const result = await pool.query(sql, [inv_id]);
+    return result.rowCount === 1;
+  } catch (error) {
+    console.error("Delete model error:", error);
+    throw error;
+  }
+}
+
+
 
 
 module.exports = {
   getClassifications,
-   addClassification,
+  addClassification,
   getInventoryByClassificationId,
   getInventoryById,
+  updateInventory,
+  hasChanges,
+  deleteInventory,
+  
 }

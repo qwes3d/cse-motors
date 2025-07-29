@@ -1,0 +1,29 @@
+<%- include('../partials/flash-messages') %>
+
+<h1><%= title %></h1>
+
+<form action="/inv/update" method="POST" id="editInventoryForm">
+  <!-- Hidden field for inventory ID -->
+  <input type="hidden" name="inv_id" value="<%= inv_id %>">
+  
+  <div class="form-group">
+    <label for="classification_id">Classification</label>
+    <%- classificationSelect %>
+  </div>
+
+  <div class="form-group">
+    <label for="inv_make">Make</label>
+    <input type="text" class="form-control <%= errors && errors.find(e => e.param === 'inv_make') ? 'is-invalid' : '' %>" 
+           id="inv_make" name="inv_make" value="<%= inv_make || '' %>" required>
+    <% if (errors && errors.find(e => e.param === 'inv_make')) { %>
+      <div class="invalid-feedback">
+        <%= errors.find(e => e.param === 'inv_make').msg %>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Repeat similar structure for all other fields -->
+  
+  <button type="submit" class="btn btn-primary">Update Vehicle</button>
+  <a href="/inv/" class="btn btn-secondary">Cancel</a>
+</form>

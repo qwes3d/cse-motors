@@ -1,0 +1,23 @@
+<%- include('../partials/flash-messages') %>
+
+<h1><%= title %></h1>
+
+<% if (locals.user) { %>
+  <h2>Welcome <%= user.account_firstname %></h2>
+  
+  <!-- Update Account Link (for all account types) -->
+  <div class="account-actions">
+    <a href="/account/update/<%= user.account_id %>" class="btn btn-primary">
+      Update Account Information
+    </a>
+  </div>
+
+  <% if (['Employee', 'Admin'].includes(user.account_type)) { %>
+    <div class="inventory-management-section">
+      <h3>Inventory Management</h3>
+      <p>
+        <a href="/inv/" class="inventory-link">Access Inventory Management</a>
+      </p>
+    </div>
+  <% } %>
+<% } %>

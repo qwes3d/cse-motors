@@ -1,0 +1,33 @@
+<%- include('../partials/flash-messages') %>
+
+<h1><%= title %></h1>
+
+<p class="text-danger"><strong>Confirm Deletion - This action cannot be undone.</strong></p>
+
+<form action="/inv/delete" method="POST" id="deleteForm">
+  <input type="hidden" name="inv_id" value="<%= inv_id %>">
+
+  <div class="form-group">
+    <label>Year</label>
+    <input type="text" class="form-control" value="<%= inv_year %>" readonly>
+  </div>
+
+  <div class="form-group">
+    <label>Make</label>
+    <input type="text" class="form-control" value="<%= inv_make %>" readonly>
+  </div>
+
+  <div class="form-group">
+    <label>Model</label>
+    <input type="text" class="form-control" value="<%= inv_model %>" readonly>
+  </div>
+
+  <div class="form-group">
+    <label>Price</label>
+    <input type="text" class="form-control" 
+           value="$<%= inv_price.toLocaleString() %>" readonly>
+  </div>
+
+  <button type="submit" class="btn btn-danger">Delete Vehicle</button>
+  <a href="/inv/" class="btn btn-secondary">Cancel</a>
+</form>

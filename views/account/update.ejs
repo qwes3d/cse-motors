@@ -1,0 +1,56 @@
+<%- include('../partials/flash-messages') %>
+
+<h1><%= title %></h1>
+
+<div class="account-forms">
+  <!-- Account Update Form -->
+  <form action="/account/update/<%= accountData.account_id %>" method="POST" class="account-form">
+    <h2>Account Information</h2>
+    
+    <div class="form-group">
+      <label for="account_firstname">First Name</label>
+      <input type="text" id="account_firstname" name="account_firstname" 
+             value="<%= accountData.account_firstname %>" required>
+    </div>
+
+    <div class="form-group">
+      <label for="account_lastname">Last Name</label>
+      <input type="text" id="account_lastname" name="account_lastname" 
+             value="<%= accountData.account_lastname %>" required>
+    </div>
+
+    <div class="form-group">
+      <label for="account_email">Email</label>
+      <input type="email" id="account_email" name="account_email" 
+             value="<%= accountData.account_email %>" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Account</button>
+  </form>
+
+  <!-- Password Change Form -->
+  <form action="/account/update-password/<%= accountData.account_id %>" method="POST" class="password-form">
+    <h2>Change Password</h2>
+    
+    <div class="form-group">
+      <label for="current_password">Current Password</label>
+      <input type="password" id="current_password" name="current_password" required>
+    </div>
+
+    <div class="form-group">
+      <label for="new_password">New Password</label>
+      <input type="password" id="new_password" name="new_password" required
+             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+             title="Must contain at least 8 characters, including uppercase, lowercase, and numbers">
+    </div>
+
+    <div class="form-group">
+      <label for="confirm_password">Confirm New Password</label>
+      <input type="password" id="confirm_password" name="confirm_password" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Change Password</button>
+  </form>
+</div>
+
+<a href="/account" class="btn btn-secondary">Back to Account</a>

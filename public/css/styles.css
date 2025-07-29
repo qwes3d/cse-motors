@@ -333,6 +333,83 @@ body {
   font-size: 1.25rem;
   }
 
+
+/* Inventory Table Styles */
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.inventory-table th, 
+.inventory-table td {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.inventory-table th {
+  background-color: #f2f2f2;
+}
+
+.modify-btn, .delete-btn {
+  display: inline-block;
+  padding: 4px 8px;
+  margin: 0 4px;
+  border-radius: 3px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.modify-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Delete Confirmation Styles */
+.text-danger {
+  color: #dc3545;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+#deleteForm .form-control[readonly] {
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+}
+
+.welcome-msg {
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+}
+
+.account-link, .logout-link {
+  color: #fff;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.account-link:hover, .logout-link:hover {
+  color: #4CAF50;
+}
+
 /* ========== Large Screen Styles (Desktop / Tablet) ========== */
 @media screen and (min-width: 250px) {
   body {
