@@ -22,7 +22,7 @@ router.post(
 
 // Process Login
 router.post(
-  "/login",
+  "/account/login",
   validate.loginRules(),
   validate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
@@ -34,6 +34,9 @@ router.get("/management",
   authMiddleware(['Client', 'Employee', 'Admin']),
   utilities.handleErrors(accountController.buildAccountManagement)
 );
+// Add POST route for account management form submissions
+router.post('/management', accountController.updateAccount);
+
 
 // Account Update View
 router.get("/update",
