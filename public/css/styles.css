@@ -394,13 +394,13 @@ body {
 }
 
 .welcome-msg {
-  color: #fff;
+  color: #070505;
   padding: 0.5rem 1rem;
   font-weight: bold;
 }
 
 .account-link, .logout-link {
-  color: #fff;
+  color: #0a0101;
   padding: 0.5rem 1rem;
   text-decoration: none;
   transition: color 0.3s;

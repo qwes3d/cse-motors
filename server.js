@@ -28,7 +28,11 @@ app.set('layout', './layouts/layout'); // Layout path
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(expressLayouts);
+
+//
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+
 app.use(express.urlencoded({ extended: true })); // To handle form data
 app.use(cookieParser())
 // 
@@ -67,7 +71,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-// Routes
+// Rout
 app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);

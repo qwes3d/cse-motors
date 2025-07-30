@@ -22,13 +22,13 @@ router.post(
 
 // Process Login
 router.post(
-  "/account/login",
+  "/login",
   validate.loginRules(),
   validate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
 );
 
-// ========== PROTECTED ROUTES ========== //
+// ========== PROTECTED ROUTES ========== 
 // Account Management View
 router.get("/management",
   authMiddleware(['Client', 'Employee', 'Admin']),
@@ -65,5 +65,7 @@ router.get("/logout",
   authMiddleware(['Client', 'Employee', 'Admin']),
   utilities.handleErrors(accountController.accountLogout)
 );
+
+
 
 module.exports = router;
