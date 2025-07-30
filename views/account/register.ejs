@@ -1,41 +1,48 @@
-
 <%- include('../partials/header', { title: 'Register' }) %>
 
 <main>
-  <h1><%= title %></h1>
+	<h1><%= title %></h1>
 
-  <% if (messages.error) { %>
-    <div class="flash-message error">
-      <p><%= messages.error %></p>
-    </div>
-  <% } %>
+	<% if (messages && messages.error) { %>
+	<div class="error-messages">
+		<% messages.error.forEach(function(message) { %>
+		<p class="error"><%= message %></p>
+		<% }) %>
+	</div>
+	<% } %> <% if (messages && messages.success) { %>
+	<div class="success-messages">
+		<% messages.success.forEach(function(message) { %>
+		<p class="success"><%= message %></p>
+		<% }) %>
+	</div>
+	<% } %> <% if (errors && errors.length > 0) { %>
+	<div class="validation-errors">
+		<% errors.forEach(function(error) { %>
+		<p class="error"><%= error.msg %></p>
+		<% }) %>
+	</div>
+	<% } %>
 
-  <% if (messages.success) { %>
-    <div class="flash-message success">
-      <p><%= messages.success %></p>
-    </div>
-  <% } %>
+	<form action="/account/register" method="post" class="register-form">
+		<label for="accountFirstname">First Name</label>
+		<input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>" />
+		<label for="accountlastname">Last Name</label>
+		<input type="text" name="account_lastname" id="accountlastname" required value="<%= locals.account_lastname %>" />
+		<label for="accountemail">Email</label>
+		<input type="email" name="account_email" id="accountemail" required value="<%= locals.account_email %>" />
+		<label for="password">Password</label>
+		<input type="password" id="password" name="account_password" required pattern="(?=.*\d)(?=.*[A-Z])(?=.*\W).{12,}" />
+		<button type="button" onclick="togglePassword()">Show Password</button>
 
-  <form action="/account/register" method="post" class="register-form">
-    <label for="fname">First Name</label>
-   <input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>">
-    <label for="lname">Last Name</label>
-    <input type="text" name="account_lastname" id="accountlastname" required value="<%= locals.account_lastname %>">
-    <label for="email">Email</label>
-   <input type="text" name="account_email" id="accountemail" required value="<%= locals.account_email %>">
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required pattern="(?=.*\d)(?=.*[A-Z])(?=.*\W).{12,}">
-    <button type="button" onclick="togglePassword()">Show Password</button>
+		<p class="note">Password must be at least 12 characters long, include 1 uppercase letter, 1 number, and 1 special character.</p>
 
-    <p class="note">Password must be at least 12 characters long, include 1 uppercase letter, 1 number, and 1 special character.</p>
-
-    <button type="submit" >Register</button>
-  </form>
+		<button type="submit">Register</button>
+	</form>
 </main>
 
 <script>
-  function togglePassword() {
-    const pw = document.getElementById("password");
-    pw.type = pw.type === "password" ? "text" : "password";
-  }
+	function togglePassword() {
+		const pw = document.getElementById("password");
+		pw.type = pw.type === "password" ? "text" : "password";
+	}
 </script>

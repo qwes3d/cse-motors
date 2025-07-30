@@ -137,20 +137,27 @@ validate.passwordRules = () => {
  * Check Registration Data
  * ********************************* */
 validate.checkRegData = async (req, res, next) => {
+  console.log("Checking registration data...");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log("Validation errors found:", errors.array());
+    // If there are validation errors, render the registration page with errors
     let nav = await utilities.getNav();
     return res.render("account/register", {
       title: "Register",
       nav,
       errors: errors.array(),
+      messages: req.flash(), // Use 'messages' to access flash messages
       account_firstname: req.body.account_firstname,
       account_lastname: req.body.account_lastname,
       account_email: req.body.account_email
     });
   }
+  console.log("No validation errors, proceeding to next middleware...");
+  // If no validation errors, proceed to the next middleware
   next();
 };
+
 
 /* **********************************
  * Check Login Data
@@ -158,11 +165,16 @@ validate.checkRegData = async (req, res, next) => {
 validate.checkLoginData = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log("Validation errors found:", errors.array());
+    errors.array().forEach(error => {
+      req.flash('error', error.msg);
+    });
     let nav = await utilities.getNav();
     return res.render("account/login", {
       title: "Login",
       nav,
-      errors: errors.array(),
+      messages: req.flash(), // Use 'messages' to access flash messages
+      errors: null, // Set errors to null to avoid rendering errors in the view
       account_email: req.body.account_email
     });
   }
@@ -175,11 +187,17 @@ validate.checkLoginData = async (req, res, next) => {
 validate.checkUpdateData = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log("Validation errors found:", errors.array());
+    errors.array().forEach(error => {
+      req.flash('error', error.msg);
+    });
+
     let nav = await utilities.getNav();
     return res.render("account/update", {
       title: "Update Account",
       nav,
-      errors: errors.array(),
+      messages: req.flash(), // Use 'messages' to access flash messages
+      errors: null,
       accountData: req.body
     });
   }
@@ -192,6 +210,7 @@ validate.checkUpdateData = async (req, res, next) => {
 validate.checkPasswordData = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log("Validation errors found:", errors.array());
     let nav = await utilities.getNav();
     const accountData = await accountModel.getAccountById(req.params.account_id);
     return res.render("account/update", {

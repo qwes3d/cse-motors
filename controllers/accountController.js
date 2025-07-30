@@ -10,21 +10,11 @@ async function buildLogin(req, res) {
   res.render("account/login", {
     title: "Login",
     nav,
-    errors: null,
+    errors: null, // Initialize errors to null
     messages: req.flash() // Changed to 'messages' to match common practice
   });
 }
 
-/* ======= Render Register View ======= */
-async function buildRegister(req, res) {
-  const nav = await utilities.getNav();
-  res.render("account/register", {
-    title: "Register",
-    nav,
-    errors: null,
-    messages: req.flash() // Changed to 'messages'
-  });
-}
 
 /* ======= Process Login ======= */
 async function accountLogin(req, res, next) {
@@ -53,7 +43,7 @@ async function accountLogin(req, res, next) {
         account_email: account.account_email,
         account_type: account.account_type
       },
-      process.env.JWT_SECRET,
+      process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: '1h' }
     );
 
@@ -70,20 +60,40 @@ async function accountLogin(req, res, next) {
   }
 }
 
+
+
+/* ======= Render Register View ======= */
+async function buildRegister(req, res) {
+  const nav = await utilities.getNav();
+  res.render("account/register", {
+    title: "Register",
+    nav,
+    errors: null, // Initialize errors to null
+    messages: req.flash() // Changed to 'messages'
+  });
+}
+
+
+
 /* ======= Register New Account ======= */
 async function registerAccount(req, res, next) {
   try {
     const { account_firstname, account_lastname, account_email, account_password } = req.body;
     
+     if (!account_password) {
+      req.flash('error', 'Password is required');
+      return res.redirect("/account/register");
+    }
+
     // Hash the password before storing
-    const hashedPassword = await bcrypt.hash(account_password, 10);
+    const hashed_Password = await bcrypt.hash(account_password, 10);
     
     // Create the account
     const result = await accountModel.registerAccount(
       account_firstname,
       account_lastname,
       account_email,
-      hashedPassword
+      hashed_Password
     );
 
     if (result) {
@@ -95,7 +105,7 @@ async function registerAccount(req, res, next) {
           account_email: result.account_email,
           account_type: 'Client'
         },
-        process.env.JWT_SECRET,
+        process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '1h' }
       );
       
@@ -111,10 +121,16 @@ async function registerAccount(req, res, next) {
       req.flash('error', 'Registration failed. Please try again.');
       return res.redirect("/account/register");
     }
-  } catch (error) {
+  }  catch (error) {
+    if (error.code === '23505') { // PostgreSQL unique_violation
+      req.flash("error", "Email is already in use.");
+      return res.redirect("/account/register");
+    }
     next(error);
   }
 }
+
+
 
 /* ======= Render Account Management View ======= */
 async function buildAccountManagement(req, res, next) {
@@ -124,7 +140,7 @@ async function buildAccountManagement(req, res, next) {
       title: "Account Management",
       nav,
       messages: req.flash(),
-      errors: null,
+      errors: null // Initialize errors to null,
     });
   } catch (error) {
     next(error);
@@ -142,7 +158,7 @@ async function buildUpdateAccount(req, res, next) {
       nav: await utilities.getNav(),
       accountData,
       messages: req.flash(),
-      errors: null
+      errors,
     });
   } catch (error) {
     next(error);
@@ -181,7 +197,7 @@ async function updateAccount(req, res, next) {
           account_email,
           account_type: req.account.account_type
         },
-        process.env.JWT_SECRET,
+        process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: '1h' }
       );
       
@@ -217,11 +233,11 @@ async function updatePassword(req, res, next) {
     }
 
     // Hash new password
-    const hashedPassword = await bcrypt.hash(new_password, 10);
+    const hashed_Password = await bcrypt.hash(new_password, 10);
 
     const updateResult = await accountModel.updatePassword(
       account_id,
-      hashedPassword
+      hashed_Password
     );
 
     if (updateResult) {
@@ -251,5 +267,6 @@ module.exports = {
   accountLogout,
   updatePassword,
   buildUpdateAccount,
-  updateAccount
+  updateAccount,
+
 };

@@ -4,7 +4,7 @@ const accountModel = require("../models/account-model");
 
 /* *****************************
  * Register new account
- * *************************** */
+ * *************************** *
 async function registerAccount(account_firstname, account_lastname, account_email, account_password) {
   try {
     const sql = "INSERT INTO account (account_firstname, account_lastname, account_email, account_password, account_type) VALUES ($1, $2, $3, $4, 'Client') RETURNING account_id, account_firstname, account_email";
@@ -22,7 +22,7 @@ async function registerAccount(account_firstname, account_lastname, account_emai
 }
 /* ****************************************
 *  Process Registration Controller
-* *************************************** */
+* *************************************** *
 async function processRegistration(req, res) {
   const nav = await utilities.getNav();
   const { account_firstname, account_lastname, account_email, account_password } = req.body;
@@ -54,6 +54,34 @@ async function processRegistration(req, res) {
     });
   }
 }
+*/
+
+
+
+// models/accountModel.js
+async function registerAccount(account_firstname, account_lastname, account_email, hashed_password) {
+  try {
+    const sql = `
+      INSERT INTO account 
+        (account_firstname, account_lastname, account_email, account_password, account_type) 
+      VALUES ($1, $2, $3, $4, 'Client') 
+      RETURNING account_id, account_firstname, account_email
+    `;
+    const result = await pool.query(sql, [
+      account_firstname,
+      account_lastname,
+      account_email,
+      hashed_password
+    ]);
+    return result.rows[0]; // success returns user object
+  } catch (error) {
+    console.error("Model registration error:", error);
+    throw error; // Let the controller handle it
+  }
+}
+
+
+
 
 
 /* **********************
@@ -91,7 +119,7 @@ async function getAccountByEmail (account_email) {
 module.exports = {
   registerAccount,
   checkExistingEmail,
-  processRegistration,
+ // processRegistration,
   getAccountByEmail
 };
 
