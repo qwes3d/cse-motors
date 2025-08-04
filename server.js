@@ -91,6 +91,7 @@ app.use(function (req, res, next) {
 app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
+app.use("/", accountRoute);
 
 
 // 

@@ -13,15 +13,15 @@
   </div>
 
   <!-- Role-based dashboard navigation -->
-  <div class="dashboard-navigation">
-    <% if (user.account_type === 'Admin') { %>
+ <!-- <div class="dashboard-navigation"> -->
+   <!-- <% if (user.account_type === 'Admin') { %>
       <a href="/admin/dashboard" class="btn btn-dark">Go to Admin Dashboard</a>
     <% } else if (user.account_type === 'Employee') { %>
       <a href="/employee/dashboard" class="btn btn-warning">Go to Employee Dashboard</a>
     <% } else if (user.account_type === 'Client') { %>
       <a href="/client/dashboard" class="btn btn-success">Go to Client Dashboard</a>
     <% } %>
-  </div>
+  </div>  -->
 
   <!-- Inventory Access for Admin or Employee -->
   <% if (['Employee', 'Admin'].includes(user.account_type)) { %>
@@ -33,5 +33,5 @@
     </div>
   <% } %>
 <% } else { %>
-  <p>User not recognized. Please <a href="/login">log in</a>.</p>
+  <p>User not recognized. Please <a href="/account/login">log in</a>.</p>
 <% } %>

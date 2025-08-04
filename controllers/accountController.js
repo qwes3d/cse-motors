@@ -260,6 +260,11 @@ async function updatePassword(req, res, next) {
 async function accountLogout(req, res) {
   res.clearCookie('jwt');
   req.flash('success', 'You have been logged out');
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+    }
+  });
   return res.redirect('/');
 }
 
