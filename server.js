@@ -15,10 +15,14 @@ const inventoryRoute = require('./routes/inventoryRoute');
 const accountRoute = require('./routes/accountRoute');
 const utilities = require("./utilities");
 const bodyParser = require("body-parser");
+const decodeJWT = require("./utilities/jwtMiddleware");
+
+
 
 
 // Initialize Express app
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Set EJS as the view engine
 app.set('view engine', 'ejs');
@@ -35,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-
 
 app.use(express.urlencoded({ extended: true })); // To handle form data
 app.use(cookieParser())
-// 
+app.use(decodeJWT);
 app.use(express.static('public'))
 
 
@@ -55,26 +59,39 @@ app.use(session({
   },
 }));
 
+
+
+app.use((req, res, next) => {
+  res.locals.user = req.account || req.session.accountData || null;
+  next();
+});
+
+
+
 // Flash middleware
 app.use(flash());
 
 // Custom middleware to pass flash messages to views
 app.use((req, res, next) => {
+  
   res.locals.success_msg = req.flash("success");
   res.locals.error_msg = req.flash("error");
+  res.locals.messages = req.flash("message");
   next();
 });
 
-// Optional: Use express-messages if you're using its helpers in EJS
+/* Optional: Use express-messages if you're using its helpers in EJS
 app.use(function (req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
   next();
 });
+*/
 
 // Rout
 app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
+
 
 // 
 app.use("/inventory", inventoryRoute);
@@ -103,7 +120,7 @@ app.use(async (err, req, res, next) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log(`✅ CSE Motors server running at http://localhost:${PORT}`);
 });

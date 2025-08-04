@@ -1,0 +1,13 @@
+<h1><%= title %></h1>
+
+<% if (typeof message !== 'undefined' && message.length > 0) { %>
+  <p><%= message[0] %></p>
+<% } %>
+
+<h2>Welcome <%= accountData.firstname %></h2>
+<a href="/account/update/<%= accountData.account_id %>">Update Account Information</a>
+
+<% if (accountData.account_type === "Employee" || accountData.account_type === "Admin") { %>
+  <h3>Inventory Management</h3>
+  <p><a href="/inv">Manage Inventory</a></p>
+<% } %>

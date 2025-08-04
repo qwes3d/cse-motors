@@ -2,22 +2,36 @@
 
 <h1><%= title %></h1>
 
-<% if (locals.user) { %>
-  <h2>Welcome <%= user.account_firstname %></h2>
+<% if (user.account_type) { %>
+  <h2>Welcome <%= user.account_firstname %>!</h2>
   
-  <!-- Update Account Link (for all account types) -->
+  <!-- Update Account Link -->
   <div class="account-actions">
-    <a href="/account/update/<%= user.account_id %>" class="btn btn-primary">
+    <a href="./update" class="btn btn-primary">
       Update Account Information
     </a>
   </div>
 
+  <!-- Role-based dashboard navigation -->
+  <div class="dashboard-navigation">
+    <% if (user.account_type === 'Admin') { %>
+      <a href="/admin/dashboard" class="btn btn-dark">Go to Admin Dashboard</a>
+    <% } else if (user.account_type === 'Employee') { %>
+      <a href="/employee/dashboard" class="btn btn-warning">Go to Employee Dashboard</a>
+    <% } else if (user.account_type === 'Client') { %>
+      <a href="/client/dashboard" class="btn btn-success">Go to Client Dashboard</a>
+    <% } %>
+  </div>
+
+  <!-- Inventory Access for Admin or Employee -->
   <% if (['Employee', 'Admin'].includes(user.account_type)) { %>
-    <div class="inventory-management-section">
+    <div class="inventory-management-section mt-4">
       <h3>Inventory Management</h3>
       <p>
-        <a href="/inv/" class="inventory-link">Access Inventory Management</a>
+        <a href="/inventory/management" class="inventory-link">Access Inventory Management</a>
       </p>
     </div>
   <% } %>
+<% } else { %>
+  <p>User not recognized. Please <a href="/login">log in</a>.</p>
 <% } %>

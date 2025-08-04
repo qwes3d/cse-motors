@@ -135,17 +135,21 @@ async function registerAccount(req, res, next) {
 /* ======= Render Account Management View ======= */
 async function buildAccountManagement(req, res, next) {
   try {
+    console.log("Account from JWT:", req.account); // ✅ Add this to inspect
+
     const nav = await utilities.getNav();
     res.render("account/management", {
       title: "Account Management",
       nav,
-      messages: req.flash(),
-      errors: null // Initialize errors to null,
+      success_msg: req.flash("success"),
+      error_msg: req.flash("error"),
     });
   } catch (error) {
     next(error);
   }
 }
+
+
 
 /* ======= Build Account Update View ======= */
 async function buildUpdateAccount(req, res, next) {
@@ -158,7 +162,7 @@ async function buildUpdateAccount(req, res, next) {
       nav: await utilities.getNav(),
       accountData,
       messages: req.flash(),
-      errors,
+      errors: null // Initialize errors to nullo
     });
   } catch (error) {
     next(error);
@@ -173,6 +177,7 @@ async function updateAccount(req, res, next) {
 
     // Check if email is being changed to one that already exists
     const currentAccount = await accountModel.getAccountById(account_id);
+    
     if (currentAccount.account_email !== account_email) {
       const emailExists = await accountModel.checkExistingEmail(account_email);
       if (emailExists) {
@@ -228,7 +233,7 @@ async function updatePassword(req, res, next) {
     const isMatch = await bcrypt.compare(current_password, account.account_password);
     
     if (!isMatch) {
-      req.flash('error', 'Current password is incorrect');
+      req.flash('error', 'Password must be at least 12 characters,one UPPERCASE,one number and special character');
       return res.redirect('/account/update');
     }
 
@@ -242,12 +247,12 @@ async function updatePassword(req, res, next) {
 
     if (updateResult) {
       req.flash("success", "Password updated successfully");
-      return res.redirect("/account/management");
+      return res.redirect("./account/management");
     }
     throw new Error("Password update failed");
   } catch (error) {
     req.flash("error", error.message);
-    return res.redirect('/account/update');
+    return res.redirect('./account/update');
   }
 }
 
@@ -255,7 +260,7 @@ async function updatePassword(req, res, next) {
 async function accountLogout(req, res) {
   res.clearCookie('jwt');
   req.flash('success', 'You have been logged out');
-  res.redirect('/');
+  return res.redirect('/');
 }
 
 module.exports = {

@@ -1,8 +1,10 @@
+//module to handle JWT authentication and account type verification
+
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 // Middleware to verify JWT and check account type
-const authMiddleware = (requiredTypes = ['Admin', 'Employee']) => {
+const authMiddleware = (requiredTypes = ['Admin', 'Employee', 'Client']) => {
   return async (req, res, next) => {
     try {
       // 1. Check for token in cookies
@@ -12,7 +14,7 @@ const authMiddleware = (requiredTypes = ['Admin', 'Employee']) => {
       }
 
       // 2. Verify token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
       // 3. Check account type
       if (!requiredTypes.includes(decoded.account_type)) {

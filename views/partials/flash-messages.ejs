@@ -1,5 +1,12 @@
-<% if (message && message.length > 0) { %>
-  <div class="notice"><%= message[0] %></div>
+<% if (messages && messages.length > 0) { %>
+  <div class="flash flash-info"><%= messages[0] %></div>
 <% } %>
 
+<% if (success_msg && success_msg.length > 0) { %>
+  <div class="flash flash-success"><%= success_msg[0] %></div>
+<% } %>
+
+<% if (error_msg && error_msg.length > 0) { %>
+  <div class="flash flash-error"><%= error_msg[0] %></div>
+<% } %>
 

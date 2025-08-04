@@ -1,12 +1,15 @@
 
-  <section class="hero">
-    <h1> <%messages() %> </h1>
-    <h2>Welcome to CSE Motors!</h2>
-    <h3>DMC Delorean</h3>
-    <p>3 Cup holders<br>Superman doors<br>Fuzzy dice!</p>
-    <button>Own Today</button>
-    <img src="/images/delorean.png" alt="DMC Delorean">
-  </section>
+<section class="hero">
+  <% if (messages && messages.length > 0) { %>
+    <h1><%= messages[0] %></h1>
+  <% } %>
+  <h2>Welcome to CSE Motors!</h2>
+  <h3>DMC Delorean</h3>
+  <p>3 Cup holders<br>Superman doors<br>Fuzzy dice!</p>
+  <button>Own Today</button>
+  <img src="/images/delorean.png" alt="DMC Delorean">
+</section>
+
 
   <section class="upgrades">
     <h2>Delorean Upgrades</h2>

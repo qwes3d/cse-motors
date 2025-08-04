@@ -5,12 +5,18 @@ const validate = require("../utilities/account-validation");
 const utilities = require("../utilities");
 const authMiddleware = require("../middleware/authMiddleware");
 
+
+
 // ========== PUBLIC ROUTES ========== //
 // Login View
 router.get("/login", utilities.handleErrors(accountController.buildLogin));
 
 // Registration View
 router.get("/register", utilities.handleErrors(accountController.buildRegister));
+
+// Route for /account (Account Management)
+//router.get("/account/management", authMiddleware, accountController.buildAccountManagement);
+
 
 // Process Registration
 router.post(
@@ -28,14 +34,25 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 );
 
-// ========== PROTECTED ROUTES ========== 
-// Account Management View
+
 router.get("/management",
   authMiddleware(['Client', 'Employee', 'Admin']),
   utilities.handleErrors(accountController.buildAccountManagement)
+)
+
+
+
+// ========== PROTECTED ROUTES ========== 
+// Account Management View
+
+router.post(
+  "/management",
+  authMiddleware(['Client', 'Employee', 'Admin']),
+  validate.updateRules(), // validation rules for update  
+  validate.checkUpdateData, // check update data
+  utilities.handleErrors(accountController.updateAccount)
 );
-// Add POST route for account management form submissions
-router.post('/management', accountController.updateAccount);
+// Add POST route for account management form submission
 
 
 // Account Update View
