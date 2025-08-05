@@ -1,0 +1,27 @@
+<!-- views/my-tickets.ejs -->
+
+
+<h1>My Support Tickets</h1>
+<form action="/support/my-tickets" method="POST">
+  <input type="text" name="subject" placeholder="Subject" required>
+  <br>
+  <textarea name="message" rows="4" placeholder="Write your complaint..." required></textarea>
+  <br>
+  <button type="submit">Submit Ticket</button>
+</form>
+
+
+<h2>My Support Tickets</h2>
+<% if (!tickets || tickets.length === 0) { %>
+  <p>No tickets found for your account.</p>
+<% } else { %>
+  <% tickets.forEach(ticket => { %>
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+      <p><strong>Subject:</strong> <%= ticket.subject %></p>
+      <p><strong>Message:</strong> <%= ticket.message %></p>
+      <p><strong>Status:</strong> <%= ticket.status %></p>
+      <p><strong>Date:</strong> <%= new Date(ticket.created_at).toLocaleString() %></p>
+    </div>
+  <% }) %>
+<% } %>
+

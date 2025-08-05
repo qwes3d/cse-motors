@@ -16,6 +16,7 @@ const accountRoute = require('./routes/accountRoute');
 const utilities = require("./utilities");
 const bodyParser = require("body-parser");
 const decodeJWT = require("./utilities/jwtMiddleware");
+const supportRoute = require('./routes/supportRoute');
 
 
 
@@ -92,6 +93,10 @@ app.get("/", utilities.handleErrors(baseController.buildHome));
 app.use("/inv", inventoryRoute);
 app.use("/account", accountRoute);
 app.use("/", accountRoute);
+// Support routes
+
+app.use("/support", supportRoute);
+app.use('/', supportRoute);
 
 
 // 

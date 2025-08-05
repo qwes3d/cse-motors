@@ -1,0 +1,22 @@
+<!-- views/my-tickets.ejs -->
+<%- include('partials/header') %>
+
+<h1>My Support Tickets</h1>
+
+<form action="/support/my-tickets" method="POST">
+  <textarea name="message" placeholder="Enter your complaint here..." required></textarea>
+  <button type="submit">Submit Ticket</button>
+</form>
+
+<h2>Previous Tickets</h2>
+<ul>
+  <% if (tickets.length === 0) { %>
+    <li>No tickets yet.</li>
+  <% } else { %>
+    <% tickets.forEach(ticket => { %>
+      <li><strong><%= ticket.status %></strong>: <%= ticket.message %> - <%= ticket.created_at.toLocaleString() %></li>
+    <% }) %>
+  <% } %>
+</ul>
+
+<%- include('partials/footer') %>

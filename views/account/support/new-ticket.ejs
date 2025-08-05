@@ -1,0 +1,15 @@
+
+// === views/support/new-ticket.ejs ===
+<%- include('../partials/flash-messages') %>
+<h1><%= title %></h1>
+<form method="POST" action="/support">
+  <div>
+    <label for="subject">Subject:</label>
+    <input type="text" name="subject" id="subject" required />
+  </div>
+  <div>
+    <label for="message">Message:</label>
+    <textarea name="message" id="message" required></textarea>
+  </div>
+  <button type="submit">Submit Ticket</button>
+</form>

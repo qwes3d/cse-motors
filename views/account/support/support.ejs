@@ -1,0 +1,16 @@
+
+// === views/support/support.ejs ===
+<%- include('../partials/flash-messages') %>
+<h1><%= title %></h1>
+<a href="/support/new">Submit New Ticket</a>
+<ul>
+  <% tickets.forEach(t => { %>
+    <li>
+      <strong><%= t.subject %></strong> - <%= t.status %><br>
+      <%= t.message %><br>
+      <% if (t.response) { %>
+        <em>Response:</em> <%= t.response %>
+      <% } %>
+    </li>
+  <% }) %>
+</ul>

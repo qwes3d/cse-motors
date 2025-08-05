@@ -1,0 +1,19 @@
+// === views/support/admin-tickets.ejs ===
+<%- include('../partials/flash-messages') %>
+<h1><%= title %></h1>
+<ul>
+  <% tickets.forEach(t => { %>
+    <li>
+      <strong><%= t.subject %></strong> by <%= t.account_firstname %> <%= t.account_lastname %> - <%= t.status %><br>
+      <%= t.message %><br>
+      <% if (t.response) { %>
+        <em>Response:</em> <%= t.response %>
+      <% } else { %>
+        <form action="/support/respond/<%= t.ticket_id %>" method="POST">
+          <textarea name="response" required></textarea>
+          <button type="submit">Respond</button>
+        </form>
+      <% } %>
+    </li>
+  <% }) %>
+</ul>

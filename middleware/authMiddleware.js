@@ -31,9 +31,17 @@ const authMiddleware = (requiredTypes = ['Admin', 'Employee', 'Client']) => {
     } catch (error) {
       console.error('Authentication error:', error.message);
       req.flash('error', 'Please login with proper credentials to access this page');
-      res.redirect('/account/management');
+      res.redirect('/account/login');
     }
   };
 };
 
+function ensureClient(req, res, next) {
+  if (!req.session.account_id || req.session.role !== 'Client') {
+    return res.redirect('/login');
+  }
+  next();
+}
+
 module.exports = authMiddleware;
+module.exports.ensureClient = ensureClient;

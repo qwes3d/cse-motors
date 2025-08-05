@@ -1,0 +1,22 @@
+<h2>All Support Tickets</h2>
+<% tickets.forEach(ticket => { %>
+  <div class="ticket">
+    <h3><%= ticket.subject %> - <%= ticket.status %></h3>
+    <p><strong>User:</strong> <%= ticket.account_firstname %> <%= ticket.account_lastname %></p>
+    <p><strong>Message:</strong> <%= ticket.message %></p>
+    <% if (ticket.status === 'Open' || ticket.status === 'Replied') { %>
+      <form action="/admin/support/reply/<%= ticket.ticket_id %>" method="POST">
+        <textarea name="admin_reply" placeholder="Reply here..." required></textarea>
+        <button type="submit">Send Reply</button>
+      </form>
+    <% } %>
+    <% if (ticket.status !== 'Closed') { %>
+      <form action="/admin/support/close/<%= ticket.ticket_id %>" method="POST">
+        <button type="submit">Close Ticket</button>
+      </form>
+    <% } %>
+    <% if (ticket.admin_reply) { %>
+      <p><strong>Admin Reply:</strong> <%= ticket.admin_reply %></p>
+    <% } %>
+  </div>
+<% }) %>
