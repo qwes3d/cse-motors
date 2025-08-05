@@ -2,8 +2,16 @@
   <ul>
     <li><a href="/">Home</a></li>
     <li><a href="/inv">Inventory</a></li>
-    <li><a href="/account/login">Login</a></li>
-    <li><a href="../support/my-tickets">Support</a></li>
+     <% if (user) { %>
+      <li><a href="/account/orders">Orders</a></li>
+      <li><a href="/account/wishlist">Wishlist</a></li>
+      <li><a href="/account/profile">Profile</a></li>
+      <li><a href="/account/settings">Settings</a></li>
+       
+       <% } else { %>
+      <li><a href="/account/login">Login</a></li>
+    <% } %>
 
+    <li><a href="/support/my-tickets">Support</a></li>
   </ul>
 </nav>

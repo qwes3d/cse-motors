@@ -84,5 +84,27 @@ router.get("/logout",
 );
 
 
+// Only logged-in users (Clients) can access these
+router.get('/orders', authMiddleware(['Client']), (req, res) => {
+  res.render('account/orders');
+});
+
+router.get('/wishlist', authMiddleware(['Client']), (req, res) => {
+  res.render('account/wishlist');
+});
+
+router.get('/profile', authMiddleware(['Client']), (req, res) => {
+  res.render('account/profile');
+});
+
+router.get('/settings', authMiddleware(['Client']), (req, res) => {
+  res.render('account/settings');
+});
+
+
+
+
+
+
 
 module.exports = router;

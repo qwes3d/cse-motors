@@ -17,9 +17,8 @@
             <a href="/account/management" class="account-link">Account Management</a>
           </li>
           <li>
-            <a href="/logout" class="logout-link">Logout</a>
-          </li>
-        <% } else { %>
+            <a href="/account/logout">Logout (<%= user.account_firstname %>)</a></li>
+    <% } else { %>
           <li>
             <a href="/account/login" class="account-link">My Account</a>
           </li>

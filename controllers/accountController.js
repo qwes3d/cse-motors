@@ -140,7 +140,6 @@ async function buildAccountManagement(req, res, next) {
     const nav = await utilities.getNav();
     res.render("account/management", {
       title: "Account Management",
-      nav,
       success_msg: req.flash("success"),
       error_msg: req.flash("error"),
     });
